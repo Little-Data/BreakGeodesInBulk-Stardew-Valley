@@ -1,0 +1,35 @@
+{
+  "gmcm.section.name": "Geode Breaking Options",
+
+  "gmcm.break-mode.name": "Geode Break Mode",
+  "gmcm.break-mode.tooltip": "Choose how geodes are broken when inventory is full.",
+  "gmcm.break-mode.all-fits": "As Many As Fit Inventory",
+  "gmcm.break-mode.all-ground": "All (Extra Falls On Ground)",
+
+  "gmcm.anim-speed.name": "Animation Speed Multiplier",
+  "gmcm.anim-speed.tooltip": "Adjust the geode breaking animation speed. Lower = faster. Example: 0.5 = 2x faster. Ignored when 'Skip Breaking Animation' is enabled.",
+
+  "gmcm.skip-animation.name": "Skip Breaking Animation",
+  "gmcm.skip-animation.tooltip": "Skip the geode breaking animation. Rewards are given instantly.",
+
+  "gmcm.play-sound.name": "Play Breaking Sound",
+  "gmcm.play-sound.tooltip": "Play a break sound when cracking geodes. Only applies when 'Skip Breaking Animation' is enabled.",
+
+  "gmcm.mobile-mode.name": "Mobile Compatibility Mode",
+  "gmcm.mobile-mode.tooltip": "Enable this if you're playing on Android/mobile to prevent game crashes.",
+
+  "gmcm.debug-mode.name": "Enable Debug Mode",
+  "gmcm.debug-mode.tooltip": "Enable verbose logging to help with debugging. Turn off for normal gameplay.",
+
+  "gmcm.show-overlay.name": "Show Break Count Overlay",
+  "gmcm.show-overlay.tooltip": "Show the x{N} break count overlay after breaking geodes.",
+
+  "gmcm.overlay-offset-x.name": "Overlay Offset X",
+  "gmcm.overlay-offset-x.tooltip": "Horizontal offset of geode count text. Positive moves right, negative moves left. Adjust on mobile to fit your screen.",
+  "gmcm.overlay-offset-y.name": "Overlay Offset Y",
+  "gmcm.overlay-offset-y.tooltip": "Vertical offset of geode count text. Positive moves down, negative moves up. Adjust on mobile to fit your screen.",
+  "gmcm.overlay-scale.name": "Overlay Font Scale",
+  "gmcm.overlay-scale.tooltip": "Size of the overlay number. Example: 0.6 = 60% size, 1.0 = full size.",
+
+  "message.no-inventory-space": "Not enough inventory space for geode rewards."
+}

@@ -17,7 +17,10 @@ namespace BreakGeodesInBulk
         public int OverlayOffsetY { get; set; } = 60;
         public float OverlayScale { get; set; } = 1.0f;
         public bool UseMobileGeodeFix { get; set; } = false;
-        public bool DebugMode { get; set; } = false; 
+        public bool DebugMode { get; set; } = false;
+        public bool SkipAnimation { get; set; } = false;
+        public bool PlaySound { get; set; } = true;
+        public bool ShowOverlay { get; set; } = true;
     }
 
 
@@ -82,12 +85,12 @@ namespace BreakGeodesInBulk
                 save: () => Helper.WriteConfig(Config)
             );
 
-            gmcm.AddSectionTitle(ModManifest, () => "Geode Breaking Options");
+            gmcm.AddSectionTitle(ModManifest, () => Helper.Translation.Get("gmcm.section.name"));
 
             gmcm.AddTextOption(
                 mod: ModManifest,
-                name: () => "Geode Break Mode",
-                tooltip: () => "Choose how geodes are broken when inventory is full.",
+                name: () => Helper.Translation.Get("gmcm.break-mode.name"),
+                tooltip: () => Helper.Translation.Get("gmcm.break-mode.tooltip"),
                 getValue: () => Config.GeodesToBreak.ToString(),
                 setValue: value =>
                 {
@@ -99,8 +102,8 @@ namespace BreakGeodesInBulk
                 {
                     return value switch
                     {
-                        nameof(GeodeBreakMode.AllIfInventoryFits) => "All (If Inventory Fits)",
-                        nameof(GeodeBreakMode.AllExtraFallsOnGround) => "All (Extra Falls On Ground)",
+                        nameof(GeodeBreakMode.AllIfInventoryFits) => ModEntry.Instance.Helper.Translation.Get("gmcm.break-mode.all-fits"),
+                        nameof(GeodeBreakMode.AllExtraFallsOnGround) => ModEntry.Instance.Helper.Translation.Get("gmcm.break-mode.all-ground"),
                         _ => value
                     };
                 }
@@ -109,8 +112,8 @@ namespace BreakGeodesInBulk
 
             gmcm.AddNumberOption(
                 mod: ModManifest,
-                name: () => "Animation Speed Multiplier",
-                tooltip: () => "Adjust how fast Clint breaks geodes. Lower = faster. Example: 0.5 = 2x faster.",
+                name: () => Helper.Translation.Get("gmcm.anim-speed.name"),
+                tooltip: () => Helper.Translation.Get("gmcm.anim-speed.tooltip"),
                 getValue: () => Config.AnimationSpeedMultiplier,
                 setValue: value => Config.AnimationSpeedMultiplier = value,
                 min: 0.1f,
@@ -120,49 +123,78 @@ namespace BreakGeodesInBulk
 
             gmcm.AddBoolOption(
                 mod: ModManifest,
-                name: () => "Mobile Compatibility Mode",
-                tooltip: () => "Enable this if you're playing on Android/mobile to prevent game crashes.",
+                name: () => Helper.Translation.Get("gmcm.skip-animation.name"),
+                tooltip: () => Helper.Translation.Get("gmcm.skip-animation.tooltip"),
+                getValue: () => Config.SkipAnimation,
+                setValue: value => Config.SkipAnimation = value
+            );
+
+            gmcm.AddBoolOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("gmcm.play-sound.name"),
+                tooltip: () => Helper.Translation.Get("gmcm.play-sound.tooltip"),
+                getValue: () => Config.PlaySound,
+                setValue: value => Config.PlaySound = value
+            );
+
+            gmcm.AddBoolOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("gmcm.show-overlay.name"),
+                tooltip: () => Helper.Translation.Get("gmcm.show-overlay.tooltip"),
+                getValue: () => Config.ShowOverlay,
+                setValue: value => Config.ShowOverlay = value
+            );
+
+            gmcm.AddBoolOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("gmcm.mobile-mode.name"),
+                tooltip: () => Helper.Translation.Get("gmcm.mobile-mode.tooltip"),
                 getValue: () => Config.UseMobileGeodeFix,
                 setValue: value => Config.UseMobileGeodeFix = value
             );
 
             gmcm.AddBoolOption(
                 mod: ModManifest,
-                name: () => "Enable Debug Mode",
-                tooltip: () => "Enable verbose logging to help with debugging. Turn off for normal gameplay.",
+                name: () => Helper.Translation.Get("gmcm.debug-mode.name"),
+                tooltip: () => Helper.Translation.Get("gmcm.debug-mode.tooltip"),
                 getValue: () => Config.DebugMode,
                 setValue: value => Config.DebugMode = value
             );
 
 
 
-            /* Used for troubleshooting the number value but not needed, commenting out.
-
             gmcm.AddNumberOption(
                 mod: ModManifest,
-                name: () => "Overlay Offset X",
-                tooltip: () => "Horizontal offset of geode count text. Positive moves right, negative moves left.",
+                name: () => Helper.Translation.Get("gmcm.overlay-offset-x.name"),
+                tooltip: () => Helper.Translation.Get("gmcm.overlay-offset-x.tooltip"),
                 getValue: () => Config.OverlayOffsetX,
-                setValue: value => Config.OverlayOffsetX = value
+                setValue: value => Config.OverlayOffsetX = value,
+                min: -500,
+                max: 500,
+                interval: 1
             );
 
             gmcm.AddNumberOption(
                 mod: ModManifest,
-                name: () => "Overlay Offset Y",
-                tooltip: () => "Vertical offset of geode count text. Positive moves down, negative moves up.",
+                name: () => Helper.Translation.Get("gmcm.overlay-offset-y.name"),
+                tooltip: () => Helper.Translation.Get("gmcm.overlay-offset-y.tooltip"),
                 getValue: () => Config.OverlayOffsetY,
-                setValue: value => Config.OverlayOffsetY = value
+                setValue: value => Config.OverlayOffsetY = value,
+                min: -500,
+                max: 500,
+                interval: 1
             );
 
             gmcm.AddNumberOption(
                 mod: ModManifest,
-                name: () => "Overlay Font Scale",
-                tooltip: () => "Size of the overlay number. Example: 0.6 = 60% size, 1.0 = full size.",
+                name: () => Helper.Translation.Get("gmcm.overlay-scale.name"),
+                tooltip: () => Helper.Translation.Get("gmcm.overlay-scale.tooltip"),
                 getValue: () => Config.OverlayScale,
-                setValue: value => Config.OverlayScale = MathF.Max(0.1f, MathF.Min(2f, value)) // clamps between 0.1 and 2.0
+                setValue: value => Config.OverlayScale = value,
+                min: 0.1f,
+                max: 2f,
+                interval: 0.1f
             );
-
-            */
 
         }
 
@@ -285,11 +317,11 @@ namespace BreakGeodesInBulk
 
                 if (targetAmount <= 0)
                 {
-                    Game1.showRedMessage("Not enough inventory space for geode rewards.");
+                    Game1.showRedMessage(ModEntry.Instance.Helper.Translation.Get("message.no-inventory-space"));
                     return false;
                 }
 
-                showBreakAmountTimer = (int)(120 * Config.AnimationSpeedMultiplier);
+                showBreakAmountTimer = Config.SkipAnimation ? 120 : (int)(120 * Config.AnimationSpeedMultiplier);
                 lastBreakAmount = targetAmount;
 
                 List<Item> rewards = new();
@@ -299,7 +331,7 @@ namespace BreakGeodesInBulk
                 {
                     ModEntry.Instance.Log("Generating rewards...", LogLevel.Info);
 
-                    for (int i = 0; i < targetAmount - 1; i++)
+                    for (int i = 0; i < (Config.SkipAnimation ? targetAmount : targetAmount - 1); i++)
                     {
                         Item tempGeode = held.getOne();
                         ModEntry.Instance.Log($"Processing geode #{i + 1}: {tempGeode?.QualifiedItemId ?? "null"}", LogLevel.Trace);
@@ -359,59 +391,102 @@ namespace BreakGeodesInBulk
                     return true;
                 }
 
-                try
+                if (Config.SkipAnimation)
                 {
-                    Game1.playSound("stoneStep");
-                    __instance.clint.setCurrentAnimation(new List<FarmerSprite.AnimationFrame>
-            {
-                new(8, (int)(300 * Config.AnimationSpeedMultiplier)),
-                new(9, (int)(200 * Config.AnimationSpeedMultiplier)),
-                new(10, (int)(80 * Config.AnimationSpeedMultiplier)),
-                new(11, (int)(200 * Config.AnimationSpeedMultiplier)),
-                new(12, (int)(100 * Config.AnimationSpeedMultiplier)),
-                new(8, (int)(300 * Config.AnimationSpeedMultiplier))
-            });
-                    __instance.clint.loop = false;
-                    ModEntry.Instance.Log("Clint animation set", LogLevel.Info);
-                }
-                catch (Exception ex)
-                {
-                    ModEntry.Instance.Log($"[ERROR] Failed to set Clint animation or play sound: {ex}", LogLevel.Error);
-                }
-
-                try
-                {
-                    Game1.delayedActions.Add(new DelayedAction((int)(2700 * Config.AnimationSpeedMultiplier), () =>
+                    if (Config.PlaySound)
                     {
                         try
                         {
-                            ModEntry.Instance.Log("Reward delivery triggered", LogLevel.Info);
+                            Game1.playSound("newArtifact");
+                        }
+                        catch (Exception ex)
+                        {
+                            ModEntry.Instance.Log($"[ERROR] Failed to play sound: {ex}", LogLevel.Error);
+                        }
+                    }
 
-                            foreach (Item reward in rewards)
+                    __instance.geodeSpot.item = null;
+
+                    foreach (Item reward in rewards)
+                    {
+                        if (!Game1.player.addItemToInventoryBool(reward))
+                        {
+                            ModEntry.Instance.Log($"Dropping reward on ground: {reward?.QualifiedItemId ?? "null"}", LogLevel.Trace);
+                            Game1.createItemDebris(reward, Game1.player.getStandingPosition(), Game1.player.FacingDirection);
+                        }
+                        else
+                        {
+                            ModEntry.Instance.Log($"Reward added to inventory: {reward?.QualifiedItemId ?? "null"}", LogLevel.Trace);
+                        }
+                    }
+                }
+                else
+                {
+                    if (Config.PlaySound)
+                    {
+                        try
+                        {
+                            Game1.playSound("stoneStep");
+                        }
+                        catch (Exception ex)
+                        {
+                            ModEntry.Instance.Log($"[ERROR] Failed to play sound: {ex}", LogLevel.Error);
+                        }
+                    }
+
+                    try
+                    {
+                        __instance.clint.setCurrentAnimation(new List<FarmerSprite.AnimationFrame>
+                        {
+                            new(8, (int)(300 * Config.AnimationSpeedMultiplier)),
+                            new(9, (int)(200 * Config.AnimationSpeedMultiplier)),
+                            new(10, (int)(80 * Config.AnimationSpeedMultiplier)),
+                            new(11, (int)(200 * Config.AnimationSpeedMultiplier)),
+                            new(12, (int)(100 * Config.AnimationSpeedMultiplier)),
+                            new(8, (int)(300 * Config.AnimationSpeedMultiplier))
+                        });
+                        __instance.clint.loop = false;
+                        ModEntry.Instance.Log("Clint animation set", LogLevel.Info);
+                    }
+                    catch (Exception ex)
+                    {
+                        ModEntry.Instance.Log($"[ERROR] Failed to set Clint animation: {ex}", LogLevel.Error);
+                    }
+
+                    try
+                    {
+                        Game1.delayedActions.Add(new DelayedAction((int)(2700 * Config.AnimationSpeedMultiplier), () =>
+                        {
+                            try
                             {
-                                if (!Game1.player.addItemToInventoryBool(reward))
+                                ModEntry.Instance.Log("Reward delivery triggered", LogLevel.Info);
+
+                                foreach (Item reward in rewards)
                                 {
-                                    ModEntry.Instance.Log($"Dropping reward on ground: {reward?.QualifiedItemId ?? "null"}", LogLevel.Trace);
-                                    Game1.createItemDebris(reward, Game1.player.getStandingPosition(), Game1.player.FacingDirection);
-                                }
-                                else
-                                {
-                                    ModEntry.Instance.Log($"Reward added to inventory: {reward?.QualifiedItemId ?? "null"}", LogLevel.Trace);
+                                    if (!Game1.player.addItemToInventoryBool(reward))
+                                    {
+                                        ModEntry.Instance.Log($"Dropping reward on ground: {reward?.QualifiedItemId ?? "null"}", LogLevel.Trace);
+                                        Game1.createItemDebris(reward, Game1.player.getStandingPosition(), Game1.player.FacingDirection);
+                                    }
+                                    else
+                                    {
+                                        ModEntry.Instance.Log($"Reward added to inventory: {reward?.QualifiedItemId ?? "null"}", LogLevel.Trace);
+                                    }
                                 }
                             }
-                        }
-                        catch (Exception ex2)
-                        {
-                            ModEntry.Instance.Log($"[ERROR] Exception during reward delivery: {ex2}", LogLevel.Error);
-                        }
-                    }));
+                            catch (Exception ex2)
+                            {
+                                ModEntry.Instance.Log($"[ERROR] Exception during reward delivery: {ex2}", LogLevel.Error);
+                            }
+                        }));
 
-                    __instance.geodeAnimationTimer = (int)(2700 * Config.AnimationSpeedMultiplier);
-                    ModEntry.Instance.Log("Set geodeAnimationTimer and delayed reward action", LogLevel.Info);
-                }
-                catch (Exception ex)
-                {
-                    ModEntry.Instance.Log($"[ERROR] Failed to schedule delayed action or set animation timer: {ex}", LogLevel.Error);
+                        __instance.geodeAnimationTimer = (int)(2700 * Config.AnimationSpeedMultiplier);
+                        ModEntry.Instance.Log("Set geodeAnimationTimer and delayed reward action", LogLevel.Info);
+                    }
+                    catch (Exception ex)
+                    {
+                        ModEntry.Instance.Log($"[ERROR] Failed to schedule delayed action or set animation timer: {ex}", LogLevel.Error);
+                    }
                 }
 
                 ModEntry.Instance.Log("Finished ReceiveLeftClick_Prefix", LogLevel.Info);
@@ -428,6 +503,9 @@ namespace BreakGeodesInBulk
 
         private static void DrawOverlay_Postfix(GeodeMenu __instance, SpriteBatch b)
         {
+            if (!Config.ShowOverlay)
+                return;
+
             if (showBreakAmountTimer > 0)
             {
                 showBreakAmountTimer--;
@@ -511,11 +589,11 @@ namespace BreakGeodesInBulk
 
             if (targetAmount <= 0)
             {
-                Game1.showRedMessage("Not enough inventory space for geode rewards.");
+                Game1.showRedMessage(ModEntry.Instance.Helper.Translation.Get("message.no-inventory-space"));
                 return false;
             }
 
-            showBreakAmountTimer = (int)(120 * Config.AnimationSpeedMultiplier);
+            showBreakAmountTimer = Config.SkipAnimation ? 120 : (int)(120 * Config.AnimationSpeedMultiplier);
             lastBreakAmount = targetAmount;
 
             List<Item> rewards = new();
@@ -564,27 +642,65 @@ namespace BreakGeodesInBulk
 
             Game1.player.Money -= 25 * targetAmount;
 
-            __instance.clint.setCurrentAnimation(new()
+            if (Config.SkipAnimation)
             {
-                new(8, (int)(300 * Config.AnimationSpeedMultiplier)),
-                new(9, (int)(200 * Config.AnimationSpeedMultiplier)),
-                new(10, (int)(80 * Config.AnimationSpeedMultiplier)),
-                new(11, (int)(200 * Config.AnimationSpeedMultiplier)),
-                new(12, (int)(100 * Config.AnimationSpeedMultiplier)),
-                new(8, (int)(300 * Config.AnimationSpeedMultiplier))
-            });
-            __instance.clint.loop = false;
+                if (Config.PlaySound)
+                {
+                    try
+                    {
+                        Game1.playSound("newArtifact");
+                    }
+                    catch (Exception ex)
+                    {
+                        ModEntry.Instance.Log($"[ERROR] Failed to play sound: {ex}", LogLevel.Error);
+                    }
+                }
 
-            Game1.delayedActions.Add(new DelayedAction((int)(2700 * Config.AnimationSpeedMultiplier), () =>
-            {
+                __instance.geodeSpot.item = null;
+
                 foreach (var reward in rewards)
                 {
                     if (!Game1.player.addItemToInventoryBool(reward))
                         Game1.createItemDebris(reward, Game1.player.getStandingPosition(), Game1.player.FacingDirection);
                 }
-            }));
+            }
+            else
+            {
+                if (Config.PlaySound)
+                {
+                    try
+                    {
+                        Game1.playSound("stoneStep");
+                    }
+                    catch (Exception ex)
+                    {
+                        ModEntry.Instance.Log($"[ERROR] Failed to play sound: {ex}", LogLevel.Error);
+                    }
+                }
 
-            __instance.geodeAnimationTimer = (int)(2700 * Config.AnimationSpeedMultiplier);
+                __instance.clint.setCurrentAnimation(new()
+                {
+                    new(8, (int)(300 * Config.AnimationSpeedMultiplier)),
+                    new(9, (int)(200 * Config.AnimationSpeedMultiplier)),
+                    new(10, (int)(80 * Config.AnimationSpeedMultiplier)),
+                    new(11, (int)(200 * Config.AnimationSpeedMultiplier)),
+                    new(12, (int)(100 * Config.AnimationSpeedMultiplier)),
+                    new(8, (int)(300 * Config.AnimationSpeedMultiplier))
+                });
+                __instance.clint.loop = false;
+
+                Game1.delayedActions.Add(new DelayedAction((int)(2700 * Config.AnimationSpeedMultiplier), () =>
+                {
+                    foreach (var reward in rewards)
+                    {
+                        if (!Game1.player.addItemToInventoryBool(reward))
+                            Game1.createItemDebris(reward, Game1.player.getStandingPosition(), Game1.player.FacingDirection);
+                    }
+                }));
+
+                __instance.geodeAnimationTimer = (int)(2700 * Config.AnimationSpeedMultiplier);
+            }
+
             return false;
         }
 

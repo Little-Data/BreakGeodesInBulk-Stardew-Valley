@@ -1,0 +1,35 @@
+{
+  "gmcm.section.name": "晶球批量打破选项",
+
+  "gmcm.break-mode.name": "晶球打破模式",
+  "gmcm.break-mode.tooltip": "选择背包满时如何打破晶球。",
+  "gmcm.break-mode.all-fits": "适量（背包能装下）",
+  "gmcm.break-mode.all-ground": "全部（多出的掉地上）",
+
+  "gmcm.anim-speed.name": "动画速度倍率",
+  "gmcm.anim-speed.tooltip": "调整打破晶球的动画速度。数值越低越快。例如：0.5 = 2倍速。启用 “跳过砸开动画” 时该设置无效。",
+
+  "gmcm.skip-animation.name": "跳过砸开动画",
+  "gmcm.skip-animation.tooltip": "跳过砸开晶球的动画，立即获得奖励。",
+
+  "gmcm.play-sound.name": "播放砸开音效",
+  "gmcm.play-sound.tooltip": "砸开晶球时播放音效。仅在启用 “跳过砸开动画” 时可用，否则为默认音效。",
+
+  "gmcm.mobile-mode.name": "移动端兼容模式",
+  "gmcm.mobile-mode.tooltip": "如果你在 Android/手机上游玩，启用此选项以防止游戏崩溃。",
+
+  "gmcm.debug-mode.name": "启用调试模式",
+  "gmcm.debug-mode.tooltip": "启用详细日志以帮助调试。正常游戏时请关闭。",
+
+  "gmcm.show-overlay.name": "显示砸开数量叠加文字",
+  "gmcm.show-overlay.tooltip": "砸开晶球后显示 x{N} 数量叠加文字。",
+
+  "gmcm.overlay-offset-x.name": "叠加文字 X 偏移",
+  "gmcm.overlay-offset-x.tooltip": "晶球数量文字的横向偏移。正数向右，负数向左。移动设备可调整此值适配屏幕。",
+  "gmcm.overlay-offset-y.name": "叠加文字 Y 偏移",
+  "gmcm.overlay-offset-y.tooltip": "晶球数量文字的纵向偏移。正数向下，负数向上。移动设备可调整此值适配屏幕。",
+  "gmcm.overlay-scale.name": "叠加文字缩放",
+  "gmcm.overlay-scale.tooltip": "叠加数字的大小。例如：0.6 = 60% 大小，1.0 = 原始大小。",
+
+  "message.no-inventory-space": "背包空间不足，无法容纳晶球奖励。"
+}

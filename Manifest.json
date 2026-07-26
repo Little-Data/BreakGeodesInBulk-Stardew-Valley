@@ -1,12 +1,12 @@
 {
   "Name": "BreakGeodesInBulk",
-  "Author": "Darkmushu1",
-  "Version": "1.0.3",
+  "Author": "Darkmushu1, Little-Data",
+  "Version": "1.0.4",
   "Description": "Break Geodes in Bulk at the Blacksmith",
   "UniqueID": "Darkmushu1.BreakGeodesInBulk",
   "EntryDll": "BreakGeodesInBulk.dll",
   "MinimumApiVersion": "4.0.0",
-  "UpdateKeys": [ "Nexus:34257" ],
+  "UpdateKeys": [ "GitHub:Little-Data/BreakGeodesInBulk-Stardew-Valley" ],
   "Dependencies": [
     {
       "UniqueID": "spacechase0.GenericModConfigMenu",
