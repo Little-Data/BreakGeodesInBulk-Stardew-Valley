@@ -33,10 +33,10 @@ namespace BreakGeodesInBulk
 
     public class ModEntry : Mod
     {
-        internal static ModConfig Config;
+        internal static ModConfig Config = null!;
         private static int showBreakAmountTimer = 0;
         private static int lastBreakAmount = 0;
-        public static ModEntry Instance { get; private set; }
+        public static ModEntry Instance { get; private set; } = null!;
 
 
         public override void Entry(IModHelper helper)
@@ -58,7 +58,7 @@ namespace BreakGeodesInBulk
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
         }
 
-        private void OnGameLaunched(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
+        private void OnGameLaunched(object? sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
         {
             generateGMCM();
         }
@@ -226,7 +226,7 @@ namespace BreakGeodesInBulk
 
                 ModEntry.Instance.Log("Click is valid, checking held item...", LogLevel.Info);
 
-                Item held = null;
+                Item? held = null;
                 try
                 {
                     held = __instance.heldItem;
@@ -333,23 +333,26 @@ namespace BreakGeodesInBulk
 
                     for (int i = 0; i < (Config.SkipAnimation ? targetAmount : targetAmount - 1); i++)
                     {
-                        Item tempGeode = held.getOne();
+                        Item? tempGeode = held.getOne();
                         ModEntry.Instance.Log($"Processing geode #{i + 1}: {tempGeode?.QualifiedItemId ?? "null"}", LogLevel.Trace);
 
-                        if (tempGeode.QualifiedItemId == "(O)791" && !Game1.netWorldState.Value.GoldenCoconutCracked)
+                        if (tempGeode?.QualifiedItemId == "(O)791" && !Game1.netWorldState.Value.GoldenCoconutCracked)
                         {
                             rewards.Add(ItemRegistry.Create("(O)73"));
                             Game1.netWorldState.Value.GoldenCoconutCracked = true;
                             continue;
                         }
 
-                        if (tempGeode.QualifiedItemId == "(O)MysteryBox" || tempGeode.QualifiedItemId == "(O)GoldenMysteryBox")
+                        if (tempGeode is not null)
                         {
-                            Game1.stats.Increment("MysteryBoxesOpened");
-                        }
-                        else
-                        {
-                            Game1.stats.GeodesCracked++;
+                            if (tempGeode.QualifiedItemId == "(O)MysteryBox" || tempGeode.QualifiedItemId == "(O)GoldenMysteryBox")
+                            {
+                                Game1.stats.Increment("MysteryBoxesOpened");
+                            }
+                            else
+                            {
+                                Game1.stats.GeodesCracked++;
+                            }
                         }
 
                         Game1.random = Utility.CreateRandom(
@@ -358,9 +361,13 @@ namespace BreakGeodesInBulk
                             Game1.timeOfDay + Game1.random.Next()
                         );
 
-                        Item reward = Utility.getTreasureFromGeode(tempGeode);
-                        ModEntry.Instance.Log($"Generated reward: {reward?.QualifiedItemId ?? "null"}", LogLevel.Trace);
-                        rewards.Add(reward);
+                        if (tempGeode is not null)
+                        {
+                            Item? reward = Utility.getTreasureFromGeode(tempGeode);
+                            ModEntry.Instance.Log($"Generated reward: {reward?.QualifiedItemId ?? "null"}", LogLevel.Trace);
+                            if (reward is not null)
+                                rewards.Add(reward);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -559,7 +566,7 @@ namespace BreakGeodesInBulk
                 return true;
             }
 
-            Item held = __instance.inventory.actualInventory.ElementAtOrDefault(selectedIndex);
+            Item? held = __instance.inventory.actualInventory.ElementAtOrDefault(selectedIndex);
             if (held == null || !Utility.IsGeode(held))
             {
                 ModEntry.Instance.Log("Selected item is not a valid geode", LogLevel.Info);
@@ -619,8 +626,9 @@ namespace BreakGeodesInBulk
 
                     Game1.random = Utility.CreateRandom(Game1.uniqueIDForThisGame, Game1.stats.DaysPlayed, Game1.timeOfDay + Game1.random.Next());
 
-                    var reward = Utility.getTreasureFromGeode(tempGeode);
-                    rewards.Add(reward);
+                    Item? reward = Utility.getTreasureFromGeode(tempGeode);
+                    if (reward is not null)
+                        rewards.Add(reward);
                 }
             }
             catch (Exception ex)
