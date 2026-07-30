@@ -55,6 +55,11 @@ namespace BreakGeodesInBulk
                 postfix: new HarmonyMethod(typeof(ModEntry), nameof(DrawOverlay_Postfix))
             );
 
+            harmony.Patch(
+                original: AccessTools.Method(typeof(MenuWithInventory), "cleanupBeforeExit"),
+                prefix: new HarmonyMethod(typeof(ModEntry), nameof(CleanupBeforeExit_Prefix))
+            );
+
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
         }
 
@@ -507,6 +512,11 @@ namespace BreakGeodesInBulk
         }
 
 
+
+        private static void CleanupBeforeExit_Prefix()
+        {
+            showBreakAmountTimer = 0;
+        }
 
         private static void DrawOverlay_Postfix(GeodeMenu __instance, SpriteBatch b)
         {

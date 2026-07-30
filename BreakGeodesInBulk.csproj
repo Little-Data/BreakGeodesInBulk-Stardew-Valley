@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <EnableModDeploy>false</EnableModDeploy>
     <NoWarn>$(NoWarn);CS9057</NoWarn>
-    <Version>1.0.4</Version>
+    <Version>1.0.5</Version>
   </PropertyGroup>
 
   <ItemGroup>
