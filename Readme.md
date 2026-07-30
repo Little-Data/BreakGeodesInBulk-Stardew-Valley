@@ -16,6 +16,12 @@ Stardew Valley mod to break geodes in bulk, skip/speed up the geode breaking ani
 3. **Extract to Mods folder** - Extract the mod to `Stardew Valley/Mods/BreakGeodesInBulk`
 
 # Configuration
+
+> [!WARNING]
+> 如果要在移动设备上使用 **必须开启** 移动端兼容模式，否则游戏崩溃！
+> 
+> If you want to use it on mobile devices, **you must enable mobile compatibility mode**, or the game will crash!
+
 ## In-Game Configuration (Recommended)
 
 1. Install [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098)

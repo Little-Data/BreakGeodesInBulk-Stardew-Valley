@@ -14,6 +14,12 @@
 3. **解压到 Mods 文件夹** - 将模组解压到 `Stardew Valley/Mods/BreakGeodesInBulk`
 
 # 配置
+
+> [!WARNING]
+> 如果要在移动设备上使用 **必须开启** 移动端兼容模式，否则游戏崩溃！
+> 
+> If you want to use it on mobile devices, **you must enable mobile compatibility mode**, or the game will crash!
+
 ## 游戏内配置（推荐）
 
 1. 安装 [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098)
